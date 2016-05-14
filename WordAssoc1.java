@@ -6,13 +6,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.ArrayList;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.SpringLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
+import java.lang.Comparable;
+import java.util.Comparator;
+
 
 
 public class WordAssoc1 extends JFrame implements ActionListener, WindowListener
@@ -30,7 +33,7 @@ public class WordAssoc1 extends JFrame implements ActionListener, WindowListener
     
     JTable tableArray;
     
-        
+          
     ArrayList<Object[]> list;
     
     
@@ -46,7 +49,9 @@ public class WordAssoc1 extends JFrame implements ActionListener, WindowListener
         myFrame.setResizable(false);
         myFrame.setVisible(true);
         
-        WordAssociation_Version1.main(args);
+        
+       //WordAssociation_Version1.main(args);
+         
     }
         
     public WordAssoc1()
@@ -69,6 +74,8 @@ public class WordAssoc1 extends JFrame implements ActionListener, WindowListener
         this.addWindowListener(this);
     }
 
+   
+    
     
 //<editor-fold defaultstate="collapsed" desc="GUI Construction">
      class MyModel extends AbstractTableModel
@@ -150,8 +157,7 @@ public class WordAssoc1 extends JFrame implements ActionListener, WindowListener
         {
          list.add(new Object[] {"Yes","No"});
          list.add(new Object[] {"cat","dog"});
-         list.add(new Object[] {"food","water"});
-           
+         list.add(new Object[] {"food","water"});          
         }
         
         // constructor of JTable model
@@ -186,7 +192,7 @@ public class WordAssoc1 extends JFrame implements ActionListener, WindowListener
     }
     
        
-    
+   // <editor-fold defaultstate="collapsed" desc=" ${BUBBLE SORT} ">
     public static void bubbleSort(ArrayList<Object[]> arr) 
     {
         
@@ -194,7 +200,7 @@ public class WordAssoc1 extends JFrame implements ActionListener, WindowListener
         {  
             for(int i=j+1; i<arr.size(); i++)
             {  
-                if((arr.get(i)[0]).toString().compareToIgnoreCase(arr.get(j)[0].toString())<0)
+                if((arr.get(i)[0]).toString().compareToIgnoreCase(arr.get(j)[0].toString()) < 0)
                 {  
                    Object[] words = arr.get(j); 
                    arr.set(j, arr.get(i));
@@ -204,7 +210,55 @@ public class WordAssoc1 extends JFrame implements ActionListener, WindowListener
             System.out.println(arr.get(j)[0] + " - " + arr.get(j)[1]);  
         }  
     }  
-       
+       // </editor-fold>
+ 
+    // <editor-fold defaultstate="collapsed" desc=" ${INSERTION SORT} ">
+
+public void insertionSort(ArrayList<Object[]> arr)
+        
+{
+    for(int i = 1; i < arr.size(); i++)
+    {
+        Object[] temp = arr.get(i);
+        int j;
+        
+        for(j = i - 1; j >= 0 && ((temp[0]).toString().compareToIgnoreCase(arr.get(j)[0].toString()))<0; j--) 
+
+            arr.set(j + 1, arr.get(j));
+            arr.set(j + 1, temp);
+    }
+}
+
+   // </editor-fold>
+    
+     // <editor-fold defaultstate="collapsed" desc=" ${SELECTION SORT} ">
+public static void SelectionSort ( ArrayList<Object[]> arr )
+{
+     int i;
+     int j;
+     int first;
+     Object[] temp;
+             
+     for ( i = arr.size() - 1; i > 0; i -- )  
+     {
+          first = 0;   //initialize to subscript of first element
+          for(j = 1; j <= i; j ++)   //locate smallest element between positions 1 and i.
+          {
+               if((arr.get(j)[0]).toString().compareToIgnoreCase(arr.get(first)[0].toString())<0)         
+                 first = j;
+          }
+          temp = arr.get(first);   //swap smallest found with element in position i.
+          arr.set(first, arr.get(i));
+          arr.set(i, temp);
+      }           
+}
+     // </editor-fold>
+    
+    
+   
+   
+    
+    
     public void LocateAPanel(SpringLayout myPanelLayout)
     {
         mode = Utils.LocateAPanel(myPanelLayout, mode, this, 5, 10, 300, 200);
@@ -224,7 +278,7 @@ public class WordAssoc1 extends JFrame implements ActionListener, WindowListener
         lblFW = Utils.LocateALabel(myLabelLayout, lblFW, "First Word:", 20, 30, this);
         lblAW = Utils.LocateALabel(myLabelLayout, lblAW, "Associated Word:", 20, 50, this);        
         
-        lblSort = Utils.LocateALabel(myLabelLayout, lblAW, "Sort", 320, 180, this);
+        lblSort = Utils.LocateALabel(myLabelLayout, lblAW, "Sort Systems", 320, 160, this);
         
         lblLinked = Utils.LocateALabel(myLabelLayout, lblLinked, "Linked List (of all unmatched pairs):", 20, 225, this);  
         lblBinary = Utils.LocateALabel(myLabelLayout, lblBinary, "Binary Tree (of all words):", 20, 365, this);
@@ -235,21 +289,21 @@ public class WordAssoc1 extends JFrame implements ActionListener, WindowListener
         
         
     }
-
-    public void LocateTextFields(SpringLayout myTextFieldLayout)
+    
+     public void LocateTextFields(SpringLayout myTextFieldLayout)
     {
         txtFW  = Utils.LocateATextField(myTextFieldLayout, txtFW,164, 22, 130, 25, this);
-        txtAW = Utils.LocateATextField(myTextFieldLayout, txtAW, 164, 22, 130, 50, this);            
+        txtAW = Utils.LocateATextField(myTextFieldLayout, txtAW,164 ,22, 130, 50, this);
     }
-
+    
     public void LocateButtons(SpringLayout myButtonLayout)
     {
         btnSend = Utils.LocateAButton(myButtonLayout, btnSend, "Send", 130, 90, 165, 25, this, this);
         btnCompare = Utils.LocateAButton(myButtonLayout, btnCompare, "Compare", 130, 115, 165, 25, this, this);
-        btn1 = Utils.LocateAButton(myButtonLayout, btn1, "1", 360, 175, 50, 25, this, this);
-        btn2 = Utils.LocateAButton(myButtonLayout, btn1, "2", 410, 175, 50, 25, this, this);
-        btn3 = Utils.LocateAButton(myButtonLayout, btn1, "3", 460, 175, 50, 25, this, this);
-        btnExit = Utils.LocateAButton(myButtonLayout, btn1, "Exit", 520, 175, 80, 25, this, this);
+        btn1 = Utils.LocateAButton(myButtonLayout, btn1, "Bubble", 315, 175, 75, 25, this, this);
+        btn2 = Utils.LocateAButton(myButtonLayout, btn1, "Slct.", 390, 175, 75, 25, this, this);
+        btn3 = Utils.LocateAButton(myButtonLayout, btn1, "Inser.", 465, 175, 75, 25, this, this);
+        btnExit = Utils.LocateAButton(myButtonLayout, btn1, "Exit", 540, 175, 67, 25, this, this);
         btnDisplay = Utils.LocateAButton(myButtonLayout, btnDisplay, "Display", 530, 500, 80, 25, this, this);
         
         btnDisplay1 = Utils.LocateAButton(myButtonLayout, btnDisplay1, "Display", 5, 575, 98, 25, this, this);
@@ -271,9 +325,8 @@ public class WordAssoc1 extends JFrame implements ActionListener, WindowListener
    {
        
    }
- 
-  
-   
+
+    
 //</editor-fold>
     
     // Source: http://www.dreamincode.net/forums/topic/231112-from-basic-jtable-to-a-jtable-with-a-tablemodel/
@@ -286,8 +339,9 @@ public class WordAssoc1 extends JFrame implements ActionListener, WindowListener
     {
         if(e.getSource() == btnSend)
         {
-        wordModel.add(txtFW.getText(), txtAW.getText());
-        tableArray.repaint();
+            wordModel.add(txtFW.getText(), txtAW.getText());
+            tableArray.repaint();
+            
         }
 
         if(e.getSource() == btnExit)
@@ -306,11 +360,14 @@ public class WordAssoc1 extends JFrame implements ActionListener, WindowListener
         }
         if(e.getSource() == btn2)
         {
-           
+            SelectionSort(list);
+            tableArray.repaint();
         }
         if(e.getSource() == btn3)
         {
          
+           insertionSort(list);
+           tableArray.repaint();
         }
         if(e.getSource() == btnDisplay)
         {
